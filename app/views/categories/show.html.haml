@@ -2,6 +2,6 @@
   %header
     %h3= link_to @category.name, category_path(@category)
   .videos.row
-    - @category.video_ids.each do |video|
+    - @category.videos.each do |video|
       .video.col-sm-2
-        = link_to image_tag(Video.find(video).small_cover_url), video_path(Video.find(video))
+        = link_to image_tag(video.small_cover_url), video_path(video)
