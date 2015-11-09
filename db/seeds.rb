@@ -6,9 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Category.all.each {|x| x.destroy }
-Video.all.each {|x| x.destroy }
-
 Category.create(name: 'Comedy')
 Category.create(name: 'Drama')
 Category.create(name: 'Television')
@@ -28,3 +25,7 @@ Video.create(title: 'Hero', description: 'In ancient China during the Warring St
 Video.create(title: 'Hobgoblins', description: 'Hobgoblins is a 1988 low-budget indie horror-comedy B-movie directed, written, and produced by Rick Sloane, who also served as cinematographer and editor. The plot concerns small, often considered cheaply designed and made hobgoblins (Small demon like mythical and goblin-like creatures). The film is often seen as a rip-off of "every small monster movie," but mainly Gremlins. The film is generally considered to be of exceptionally poor quality, and has come to be regarded as one of the worst films ever made.', small_cover_url: '/tmp/hobgoblins.jpg', large_cover_url: '/tmp/hobgoblins.jpg', category_ids: [Category.where(name: 'Comedy').first.id, Category.where(name: 'Sci-fi').first.id])
 Video.create(title: 'Fargo', description: 'The film is set in 1987, and stars Frances McDormand as a pregnant Minnesota police chief investigating roadside homicides that ensues after a struggling car salesman (William H. Macy) hires two criminals (Steve Buscemi and Peter Stormare) to kidnap his wife in order to extort a hefty ransom from his wealthy father-in-law (Harve Presnell).', small_cover_url: '/tmp/fargo.jpg', large_cover_url: '/tmp/fargo.jpg', category_ids: Category.where(name: 'Comedy').first.id)
 Video.create(title: 'Burn After Reading', description: 'Faced with a demotion at work due to a drinking problem, angry Osbourne Cox quits his job as a CIA analyst and resolves to write a memoir about his life and career. When his pediatrician wife Katie finds out, she sees it as a justifiable opportunity to file for divorce and continue her adulterous affair unimpeded. Taking her lawyers advice, she copies financial records and several other files from her husbands computer onto a CD. These files contain a rambling but meaningless diatribe by Cox on purported CIA activities.', small_cover_url: '/tmp/burn_after_reading.jpg', large_cover_url: '/tmp/burn_after_reading.jpg', category_ids: Category.where(name: 'Comedy').first.id)
+
+User.create(email: 'test_user@example.com', password: 'password', full_name: 'test_user')
+
+Review.create(video: Video.find_by(title: 'Hero'), user: User.find_by(full_name: 'test_user'), content: 'Wow!', rating: 4)

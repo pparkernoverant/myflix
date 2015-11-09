@@ -4,6 +4,7 @@ describe Video do
   it { should have_and_belong_to_many :categories }
   it { should validate_presence_of :title }
   it { should validate_presence_of :description }
+  it { should have_many(:reviews).order(created_at: :desc) }
 
   describe 'search_by_title' do
     it 'returns an empty array if there is no match' do
@@ -18,13 +19,13 @@ describe Video do
 
       expect(Video.search_by_title('test_video_1')).to eq([vid_1])
     end
-    
+
     it 'returns an array of one video for a partial match' do
       vid_1 = Video.create(title: 'test_video_1', description: 'test_description_1')
 
       expect(Video.search_by_title('test_video')).to eq([vid_1])
     end
-    
+
     it 'returns an array of all matches ordered by created_at' do
       vid_1 = Video.create(title: 'test_video_1', description: 'test_description_1', created_at: 1.day.ago)
       vid_2 = Video.create(title: 'test_video_2', description: 'test_description_2', created_at: 2.days.ago)

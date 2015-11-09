@@ -1,6 +1,7 @@
 class Video < ActiveRecord::Base
   include Sluggable
 
+  has_many :reviews, -> { order(created_at: :desc) }
   has_and_belongs_to_many :categories, -> { order(:name) }
 
   validates :title, presence: true

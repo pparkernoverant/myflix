@@ -2,6 +2,7 @@ class Category < ActiveRecord::Base
   include Sluggable
 
   has_and_belongs_to_many :videos, -> { order(:title) }
+  validates :name, presence: true
 
   sluggable_column :name
 
