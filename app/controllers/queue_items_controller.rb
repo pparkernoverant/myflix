@@ -25,6 +25,19 @@ class QueueItemsController < ApplicationController
   def destroy
     queue_item = QueueItem.find_by(id: queue_item_params[:id])
     queue_item.destroy if current_user.queue_items.include?(queue_item)
+    current_user.normalize_queue_item_positions!
+    redirect_to my_queue_path
+  end
+
+  def update_queue
+    begin
+      update_queue_items
+      current_user.normalize_queue_item_positions!
+      flash[:notice] = 'Queue updated.'
+    rescue ActiveRecord::RecordInvalid
+      flash[:error] = 'Invalid position numbers.'
+    end
+
     redirect_to my_queue_path
   end
 
@@ -39,6 +52,18 @@ class QueueItemsController < ApplicationController
   end
 
   def queue_item_params
-    params.permit(:video_id, :id)
+    params.permit(:video_id, :id, {queue_items: [:id, :position, :rating]})
   end
+
+  def update_queue_items
+    ActiveRecord::Base.transaction do
+      queue_item_params[:queue_items].each do |queue_item_data|
+        queue_item = QueueItem.find_by(id: queue_item_data[:id])
+        if queue_item.user == current_user
+          queue_item.update_attributes!(position: queue_item_data[:position], rating: queue_item_data[:rating])
+        end
+      end
+    end
+  end
+
 end
