@@ -16,7 +16,7 @@ describe SessionsController do
 
   describe 'POST create' do
     context 'with valid credentials' do
-      let(:test_user) { Fabricate(:user) }
+      let!(:test_user) { Fabricate(:user) }
       before { post :create, email: test_user.email, password: test_user.password }
 
       it 'puts the signed in user in the session' do
