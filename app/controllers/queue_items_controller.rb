@@ -11,6 +11,7 @@ class QueueItemsController < ApplicationController
     if current_user_queued_video?(video)
       flash[:error] = 'That item is already in your queue.'
     else
+      current_user.normalize_queue_item_positions!
       @queue_item = QueueItem.create(video: video, user: current_user, position: new_queue_item_position )
       if @queue_item.save
         flash[:notice] = 'Item added to your queue.'
